@@ -1,0 +1,56 @@
+
+def hybrid_sort(arr, threshold=50):
+    # If the array has one or no elements, it's already sorted
+    if len(arr) <= 1:
+        return arr
+    # Use Quick Sort if the array is small
+    elif len(arr) < threshold:
+        return quick_sort(arr)
+    # Use Merge Sort if the array is large
+    else:
+        return merge_sort(arr)
+
+def quick_sort(arr):
+    # Base case: an array with one or no elements is already sorted
+    if len(arr) <= 1:
+        return arr
+    # Choose the middle element as pivot
+    pivot = arr[len(arr) // 2]
+    # Divide array into parts: less than, equal to, and greater than pivot
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    # Recursively sort left and right, then combine with middle
+    return quick_sort(left) + middle + quick_sort(right)
+
+def merge_sort(arr):
+    # Base case: an array with one or no elements is already sorted
+    if len(arr) <= 1:
+        return arr
+    # Split the array in the middle
+    mid = len(arr) // 2
+    left = merge_sort(arr[:mid])
+    right = merge_sort(arr[mid:])
+    # Merge sorted halves
+    return merge(left, right)
+
+def merge(left, right):
+    result = []
+    i = j = 0
+    # Combine elements from left and right in sorted order
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    # Add remaining elements from left and right (if any)
+    result.extend(left[i:])
+    result.extend(right[j:])
+    return result
+
+# Testing Hybrid Sort
+arr = [34, 7, 23, 32, 5, 62, 32, 1, 4, 8, 16]
+sorted_arr = hybrid_sort(arr, threshold=5)
+print("Sorted array:", sorted_arr)
